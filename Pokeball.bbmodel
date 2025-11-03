@@ -274,7 +274,7 @@
 	],
 	"textures": [
 		{
-			"path": "D:\\Total\\OneDrive\\Documents\\Misc Docs\\Video Game Assets\\Modding Assets\\Minecraft Assets\\Figura Avatars\\avatars\\GitHubRepos\\FiguraSerperiorTaurAvatar\\textures\\misc\\pokeballModel.png",
+			"path": "D:\\Total\\Documents\\Figura\\Instance Avatars\\avatars\\GitHubRepos\\FiguraSerperiorTaurAvatar\\textures\\misc\\pokeballModel.png",
 			"name": "pokeballModel.png",
 			"folder": "",
 			"namespace": "",
@@ -299,7 +299,7 @@
 			"internal": true,
 			"saved": true,
 			"uuid": "d86f1222-a2d2-08e9-c6c4-11ba74bfd4bf",
-			"relative_path": "../textures/misc/pokeballModel.png",
+			"relative_path": "textures/misc/pokeballModel.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAAAXNSR0IArs4c6QAABBRJREFUaEPtWU9IFGEUf0uBLWKxursqmmu6m2iIRhqKhy6ZkHsJRAtLxDzYQSI9KWim5CktEuqyhglCeow1CE8RsocVtItmrqWp+Ge2FRPbPNTE+/SNs+s4M7TqrOAHy8x835v3fe/3/b733r7RcRzHr3m9UGS3A7bp6Wkdu9luuV06Hm8d5+6Ku6H6Wzd79j1LgYKCArDZbHA+LY31fZmchKmpKRgeHt6lL0CJiofU1FReTv/z1lZZLcXl5QH2BAvrPBMTPDc/D7dravYEgIxv/O1gMu2nqtkVQUh33wGXywXR0dEBun0+H+Tn50Nvb6/sApQwqKio4OX0lxUVhQaA0gI+OasZA55G9QeIPlgvY89vRy3gdDoBDcYfNgQDf3a7HZqamkICoK2tjZfTfzUvD3wrK5JmRJvNkF9YKM8ANQCQ8cmRZ5n4zMYcuyIIn39dg86ODvB4PAGqrFYr1NXXQ1lpaUgA9A8M8HL6kwwGYV4CAg2nFjIA30cf8s0/O4GMT4m0wNeNWQZC6+k6cE1d0BSAS5mZgEdYqpkSE8Ganh4aAxCASIMRurwvA+aoNd6DjVUvvHae1PQI3CopkSVxyABUfojiOyztbJJB/zt2LdZfZ9f62Ub4231DUyfY3NDA1nLGaAwAAiMbtn0BAOmPO66PiWNK/T+WGCPwGHysMmsaBt87nbuMJyQQBEUAKM6b45mzB5Mpahel6PwHD5AzFPdz3Dp7XFlU5/vWumzC63q9XpLOfr8fNjc3A8YiIiJATl72XIgGdb1PLvNxsfFCV6zBxO4NCQlCHzlB98w468tNzhCcIAmtLiyw2+VVTnhvaXmR3XdFuCXXU7uZC7asx7vG0HlhE9PaMzYGN6u38o83DgdYs7OF94juezlDFAwOlRQpGACN6yOCsnjjFhOwibO/YvcrONGzFQb/VM7BYG6VIEdZIXYsend2vj0qR5ARz4GdNBYTfx9wMWR0sOFidMjQ4PNOMjSOzwjGXvmBWKfOYrHsWCy5Twfb+aJ9y8HSjoiBoJnVGEyyxAI1xuM76g7qwWKgqfZjADSFPwwmP2ZAGGyCpks4ZoCm8IfB5McMULMJ+H9BqiboruXDAsDBvj7JZE6pHqgqERIbL1UT1BqEvYynjVUCQXEHlWqCWXaHog41LPtfGdfQEK9pTTAcACDwNKkJJl18pCkDqKwvxaBDqQmGAwByx0exIqR09pRqgj1X1jVngFQNYd9qgqi8ZSSDl6oJtuSMa2q8UAPgOMkwaDKZFNfHBDDUSdUEaXcRACmmEADIkp3F7NQEKURS3TFYh9YhlOUBR6UmGLyb+FGXAD2UmmBwuKP8ABdxpGuCSk7wMMYxm5OqCZIHF++2eD3ECgyFwhHc/kyGOQFlgXKp8j8+qW0i2K5deAAAAABJRU5ErkJggg=="
 		}
 	],
