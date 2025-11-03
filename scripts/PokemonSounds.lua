@@ -1,5 +1,5 @@
 -- Required scripts
-local pokeballParts = require("lib.GroupIndex")(models.models.Pokeball)
+local pokeballParts = require("lib.GroupIndex")(models.Pokeball)
 local average       = require("lib.Average")
 
 -- Keybind config

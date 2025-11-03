@@ -1,10 +1,10 @@
 -- Required scripts
-local pokemonParts = require("lib.GroupIndex")(models.models.SerperiorTaur)
+local pokemonParts = require("lib.GroupIndex")(models.SerperiorTaur)
 local squapi       = require("lib.SquAPI")
 local pose         = require("scripts.Posing")
 
 -- Animation setup
-local anims = animations["models.SerperiorTaur"]
+local anims = animations.SerperiorTaur
 
 -- Parts table setup
 local squapiParts = {}

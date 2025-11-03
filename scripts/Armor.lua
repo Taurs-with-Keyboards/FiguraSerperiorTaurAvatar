@@ -1,5 +1,5 @@
 -- Required scripts
-local pokemonParts   = require("lib.GroupIndex")(models.models.SerperiorTaur)
+local pokemonParts   = require("lib.GroupIndex")(models.SerperiorTaur)
 local serperiorArmor = require("lib.KattArmor")()
 local itemCheck      = require("lib.ItemCheck")
 local color          = require("scripts.ColorProperties")

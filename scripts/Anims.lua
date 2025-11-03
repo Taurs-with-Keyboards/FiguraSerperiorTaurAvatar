@@ -1,7 +1,7 @@
 -- Required scripts
 require("lib.GSAnimBlend")
-local pokemonParts  = require("lib.GroupIndex")(models.models.SerperiorTaur)
-local pokeballParts = require("lib.GroupIndex")(models.models.Pokeball)
+local pokemonParts  = require("lib.GroupIndex")(models.SerperiorTaur)
+local pokeballParts = require("lib.GroupIndex")(models.Pokeball)
 local ground        = require("lib.GroundCheck")
 local average       = require("lib.Average")
 local itemCheck     = require("lib.ItemCheck")
@@ -10,7 +10,7 @@ local effects       = require("scripts.SyncedVariables")
 local color         = require("scripts.ColorProperties")
 
 -- Animations setup
-local anims = animations["models.SerperiorTaur"]
+local anims = animations.SerperiorTaur
 
 -- Config setup
 config:name("SerperiorTaur")

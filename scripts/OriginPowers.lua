@@ -1,9 +1,9 @@
 -- Required scripts
 local origins      = require("lib.OriginsAPI")
-local pokemonParts = require("lib.GroupIndex")(models.models.SerperiorTaur)
+local pokemonParts = require("lib.GroupIndex")(models.SerperiorTaur)
 
 -- Animations setup
-local anims = animations["models.SerperiorTaur"]
+local anims = animations.SerperiorTaur
 
 -- Variable setup
 local damage = {
