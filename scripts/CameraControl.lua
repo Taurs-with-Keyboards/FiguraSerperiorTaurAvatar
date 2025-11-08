@@ -1,8 +1,6 @@
 -- Required scripts
-local pokemonParts = require("lib.GroupIndex")(models.SerperiorTaur)
-local itemCheck    = require("lib.ItemCheck")
-local pose         = require("scripts.Posing")
-local color        = require("scripts.ColorProperties")
+local parts = require("lib.PartsAPI")
+local pose  = require("scripts.Posing")
 
 -- Config setup
 config:name("SerperiorTaur")
@@ -18,8 +16,20 @@ savedServers[serverId] = savedServers[serverId] or false
 local eyePos = savedServers[serverId]
 
 -- Variable setup
-local head    = pokemonParts.Head
-local headPos = 0
+local head = parts.group.Head
+
+-- Sleep rotations
+local dirRot = {
+	north = 0,
+	east  = 270,
+	south = 180,
+	west  = 90
+}
+
+-- Get part matrix of part and parent parts
+local function calcMatrix(p)
+	return p and p ~= models and (calcMatrix(p:getParent()) * p:getPositionMatrix()) or matrices.mat4()
+end
 
 -- Box check
 local function inBox(pos, box_min, box_max)
@@ -28,106 +38,85 @@ local function inBox(pos, box_min, box_max)
 		   pos.z >= box_min.z and pos.z <= box_max.z
 end
 
-local crouchOffset = {
-	prev = 0,
-	next = 0,
-	curr = 0
-}
-
-local eyeHeight = {
-	prev = 0,
-	next = 0,
-	curr = 0
-}
-
--- Set starting head pos on init
-function events.ENTITY_INIT()
-	
-	headPos = player:getPos()
-	
-	local height = toggle and 1 or 0
-	for k, v in pairs(eyeHeight) do
-		eyeHeight[k] = height
-	end
-	
-end
-
-local wasCrouch = false
-function events.TICK()
-	
-	if player:getPose() == "CROUCHING" and not wasCrouch then
-		
-		crouchOffset.next = 0.35
-		wasCrouch = true
-		
-	elseif player:getPose() ~= "CROUCHING" and wasCrouch then
-		
-		crouchOffset.next = -0.35
-		wasCrouch = false
-		
-	else
-	
-		crouchOffset.prev = crouchOffset.next
-		crouchOffset.next = math.lerp(crouchOffset.prev, 0, 0.5)
-	
-	end
-	
-	eyeHeight.prev = eyeHeight.next
-	eyeHeight.next = math.lerp(eyeHeight.next, player:getEyeHeight(), 0.5)
-	
-end
-
-function events.POST_RENDER(delta, context)
+function events.RENDER(delta, context)
 	if context == "FIRST_PERSON" or context == "RENDER" or (not client.isHudEnabled() and context ~= "MINECRAFT_GUI") then
 		
-		-- Pos checking
-		local basePos = player:getPos(delta)
-		headMatrix    = head:partToWorldMatrix():apply()
+		-- Variables
+		local yaw = player:getBodyYaw(delta)
+		
+		-- Pehkui scaling
+		local nbt   = player:getNbt()
+		local types = nbt["pehkui:scale_data_types"]
+		local playerScale = (
+			types and
+			types["pehkui:base"] and
+			types["pehkui:base"]["scale"] or 1)
+		local width = (
+			types and
+			types["pehkui:width"] and
+			types["pehkui:width"]["scale"] or 1)
+		local modelWidth = (
+			types and
+			types["pehkui:model_width"] and
+			types["pehkui:model_width"]["scale"] or 1)
+		local height = (
+			types and
+			types["pehkui:height"] and
+			types["pehkui:height"]["scale"] or 1)
+		local modelHeight = (
+			types and
+			types["pehkui:model_height"] and
+			types["pehkui:model_height"]["scale"] or 1)
+		local modelEyeHeight = (
+			types and
+			types["pehkui:eye_height"] and
+			types["pehkui:eye_height"]["scale"] or 1)
+		local offsetScale = vec(width * modelWidth, height * modelHeight, width * modelWidth) * playerScale
 		
 		-- Camera offset
-		local posOffset = headMatrix - basePos
+		local posOffset  = calcMatrix(head):apply(head:getPivot()) / 16
+		local nameOffset = posOffset + vec(0, 0.85, 0)
 		
-		if context == "FIRST_PERSON" then
+		if pose.stand or pose.crouch then
 			
-			-- Pehkui scaling
-			local nbt   = player:getNbt()
-			local types = nbt["pehkui:scale_data_types"]
-			local playerScale = (
-				types and
-				types["pehkui:base"] and
-				types["pehkui:base"]["scale"] or 1)
-			local width = (
-				types and
-				types["pehkui:width"] and
-				types["pehkui:width"]["scale"] or 1)
-			local modelWidth = (
-				types and
-				types["pehkui:model_width"] and
-				types["pehkui:model_width"]["scale"] or 1)
-			local height = (
-				types and
-				types["pehkui:height"] and
-				types["pehkui:height"]["scale"] or 1)
-			local modelHeight = (
-				types and
-				types["pehkui:model_height"] and
-				types["pehkui:model_height"]["scale"] or 1)
-			local offsetScale = vec(width * modelWidth, height * modelHeight, width * modelWidth) * playerScale
+			-- If standing, lower camera offset
+			posOffset = posOffset - vec(0, 24 * modelEyeHeight, 0) / 16
 			
-			posOffset = posOffset * offsetScale
+		else
+			
+			-- else, slightly lower camera offset
+			posOffset  = posOffset - vec(0, pose.sleep and 2 or 8, pose.sleep and -24 or 0) / 16
+			nameOffset = posOffset - vec(0, -20 * modelEyeHeight, 2) / 16
+			
+			-- else, rotate camera offset on x axis
+			posOffset  = vectors.rotateAroundAxis(-player:getRot().x, posOffset,  vec(1, 0, 0))
+			nameOffset = vectors.rotateAroundAxis(-player:getRot().x, nameOffset, vec(1, 0, 0))
 			
 		end
 		
-		-- Lerp eye height
-		crouchOffset.curr = math.lerp(crouchOffset.prev, crouchOffset.next, delta)
-		eyeHeight.curr = math.lerp(eyeHeight.prev, eyeHeight.next, delta)
+		-- Rotate camera offset on y axis
+		if pose.sleep then
+			
+			-- Find block
+			local block = world.getBlockState(player:getPos())
+			local sleepRot = dirRot[block.properties["facing"]]
+			
+			posOffset  = vectors.rotateAroundAxis(sleepRot, posOffset,  vec(0, 1, 0))
+			nameOffset = vectors.rotateAroundAxis(sleepRot, nameOffset, vec(0, 1, 0))
+			
+		else
+			
+			posOffset  = vectors.rotateAroundAxis(-yaw + 180, posOffset,  vec(0, 1, 0))
+			nameOffset = vectors.rotateAroundAxis(-yaw + 180, nameOffset, vec(0, 1, 0))
+			
+		end
 		
-		-- Add eye height and slight offset
-		posOffset.y = posOffset.y + 0.2 + crouchOffset.curr - eyeHeight.curr
+		-- Apply offset
+		posOffset = posOffset * offsetScale
 		
 		-- Check for block obstruction
 		local obstructed = false
-		local cameraPos = headMatrix + vec(0, 0.2, 0) + client:getCameraDir() * 0.1
+		local cameraPos = parts.group.Body:partToWorldMatrix():apply() + vec(0, 0.2, 0) + client:getCameraDir() * 0.1
 		local blockPos = cameraPos:copy():floor()
 		local block = world.getBlockState(blockPos)
 		local boxes = block:getCollisionShape()
@@ -142,23 +131,18 @@ function events.POST_RENDER(delta, context)
 		end
 		
 		-- Renders offset
-		local posOffsetApply = not player:riptideSpinning()
 		renderer
-			:offsetCameraPivot(camPos and posOffsetApply and not obstructed and posOffset or 0)
-			:eyeOffset(eyePos and camPos and posOffsetApply and not obstructed and posOffset or 0)
+			:offsetCameraPivot(camPos and not obstructed and posOffset or 0)
+			:eyeOffset(eyePos and camPos and not obstructed and posOffset or 0)
 		
-		-- Nameplate Placement
+		-- Nameplate placement
 		nameplate.ENTITY
-			:pivot(posOffset + vec(0, 0.7 - crouchOffset.curr + eyeHeight.curr, 0))
-			:scale(pokemonParts.SerperiorTaur:getScale())
+			:pivot(nameOffset)
 		
 		-- Reverse camera when sleeping
 		renderer:offsetCameraRot(pose.sleep and renderer:isFirstPerson() and vec(0, 180, 0) or 0)
 		
 	end
-end
-
-function events.RENDER(delta, context)
 	
 	-- Disable head if first person mod is active
 	head:visible(context ~= "OTHER")
@@ -166,7 +150,7 @@ function events.RENDER(delta, context)
 end
 
 -- Camera pos toggle
-local function setPos(boolean)
+function pings.setCameraPos(boolean)
 	
 	camPos = boolean
 	config:save("CameraPos", camPos)
@@ -174,7 +158,7 @@ local function setPos(boolean)
 end
 
 -- Eye pos toggle
-local function setEye(boolean)
+function pings.setCameraEye(boolean)
 	
 	eyePos = boolean
 	savedServers[serverId] = boolean
@@ -183,77 +167,88 @@ local function setEye(boolean)
 end
 
 -- Sync variables
-local function syncCamera(a, b)
+function pings.syncCamera(a, b)
 	
 	camPos = a
 	eyePos = b
 	
 end
 
--- Setup pings
-pings.setCameraPos = setPos
-pings.setCameraEye = setEye
-pings.syncCamera   = syncCamera
+-- Host only instructions
+if not host:isHost() then return end
 
 -- Sync on tick
-if host:isHost() then
-	function events.TICK()
-		
-		if world.getTime() % 200 == 0 then
-			pings.syncCamera(camPos, eyePos)
-		end
-		
+function events.TICK()
+	
+	if world.getTime() % 200 == 0 then
+		pings.syncCamera(camPos, eyePos)
 	end
+	
 end
 
--- Activate actions
-setPos(camPos)
+-- Required scripts
+local s, wheel, itemCheck, c = pcall(require, "scripts.ActionWheel")
+if not s then return end -- Kills script early if ActionWheel.lua isnt found
+pcall(require, "scripts.Player") -- Tries to find script, not required
 
--- Table setup
-local t = {}
+-- Pages
+local parentPage = action_wheel:getPage("Player") or action_wheel:getPage("Main")
+local cameraPage = action_wheel:newPage("Camera")
 
--- Action wheel pages
-t.posPage = action_wheel:newAction()
+-- Actions table setup
+local a = {}
+
+-- Actions
+a.pageAct = parentPage:newAction()
+	:item(itemCheck("redstone"))
+	:onLeftClick(function() wheel:descend(cameraPage) end)
+
+a.posAct = cameraPage:newAction()
 	:item(itemCheck("skeleton_skull"))
-	:toggleItem(itemCheck("player_head{'SkullOwner':'"..avatar:getEntityName().."'}"))
+	:toggleItem(itemCheck("player_head{SkullOwner:"..avatar:getEntityName().."}"))
 	:onToggle(pings.setCameraPos)
 	:toggled(camPos)
 
-t.eyePage = action_wheel:newAction()
+a.eyeAct = cameraPage:newAction()
 	:item(itemCheck("ender_pearl"))
 	:toggleItem(itemCheck("ender_eye"))
 	:onToggle(pings.setCameraEye)
 	:toggled(eyePos)
 
--- Update action page info
-function events.TICK()
+-- Update actions
+function events.RENDER(delta, context)
 	
-	t.posPage
-		:title(toJson(
-			{
-				"",
-				{text = "Camera Position Toggle\n\n", bold = true, color = color.primary},
-				{text = "Sets the camera position to where your avatar's head is.\n\n", color = color.secondary},
-				{text = "To prevent x-ray, the camera will reset to its default position if inside a block.", color = "red"}
-			}
-		))
-		:hoverColor(color.hover)
-		:toggleColor(color.active)
-	
-	t.eyePage
-		:title(toJson(
-			{
-				"",
-				{text = "Eye Position Toggle\n\n", bold = true, color = color.primary},
-				{text = "Sets the eye position to match the avatar's head.\nRequires camera position toggle.\n\n", color = color.secondary},
-				{text = "WARNING: ", bold = true, color = "dark_red"},
-				{text = "This feature is dangerous!\nIt can and will be flagged on servers with anticheat!\nFurthermore, \"In Wall\" damage is possible. (The x-ray prevention will try to avoid this)\nThis setting will only be saved on a \"Per-Server\" basis.\n\nPlease use with extreme caution!", color = "red"}
-			}
-		))
-		:hoverColor(color.hover)
-		:toggleColor(color.active)
+	if action_wheel:isEnabled() then
+		a.pageAct
+			:title(toJson(
+				{text = "Camera Settings", bold = true, color = c.primary}
+			))
+		
+		a.posAct
+			:title(toJson(
+				{
+					"",
+					{text = "Camera Position Toggle\n\n", bold = true, color = c.primary},
+					{text = "Sets the camera position to where your avatar\'s head is.\n\n", color = c.secondary},
+					{text = "To prevent x-ray, the camera will reset to its default position if inside a block.", color = "red"}
+				}
+			))
+		
+		a.eyeAct
+			:title(toJson(
+				{
+					"",
+					{text = "Eye Position Toggle\n\n", bold = true, color = c.primary},
+					{text = "Sets the eye position to match the avatar\'s head.\nRequires camera position toggle.\n\n", color = c.secondary},
+					{text = "WARNING: ", bold = true, color = "dark_red"},
+					{text = "This feature is dangerous!\nIt can and will be flagged on servers with anticheat!\nFurthermore, \"In Wall\" damage is possible. (The x-ray prevention will try to avoid this)\nThis setting will only be saved on a \"Per-Server\" basis.\n\nPlease use with extreme caution!", color = "red"}
+				}
+			))
+		
+		for _, act in pairs(a) do
+			act:hoverColor(c.hover):toggleColor(c.active)
+		end
+		
+	end
 	
 end
-
--- Return action wheel pages
-return t
