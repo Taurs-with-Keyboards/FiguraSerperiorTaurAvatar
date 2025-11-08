@@ -1,5 +1,5 @@
 -- Required scripts
-local pokeballParts = require("lib.GroupIndex")(models.Pokeball)
+local pokeballParts = require("lib.GroupIndex")(models.SerperiorTaur)
 local ground        = require("lib.GroundCheck")
 local average       = require("lib.Average")
 local itemCheck     = require("lib.ItemCheck")

@@ -1,13 +1,12 @@
 -- Required scripts
 require("lib.GSAnimBlend")
-local pokemonParts  = require("lib.GroupIndex")(models.SerperiorTaur)
-local pokeballParts = require("lib.GroupIndex")(models.Pokeball)
-local ground        = require("lib.GroundCheck")
-local average       = require("lib.Average")
-local itemCheck     = require("lib.ItemCheck")
-local pose          = require("scripts.Posing")
-local effects       = require("scripts.SyncedVariables")
-local color         = require("scripts.ColorProperties")
+local pokemonParts = require("lib.GroupIndex")(models.SerperiorTaur)
+local ground       = require("lib.GroundCheck")
+local average      = require("lib.Average")
+local itemCheck    = require("lib.ItemCheck")
+local pose         = require("scripts.Posing")
+local effects      = require("scripts.SyncedVariables")
+local color        = require("scripts.ColorProperties")
 
 -- Animations setup
 local anims = animations.SerperiorTaur
@@ -144,7 +143,7 @@ function events.TICK()
 		tail.rot.prev.z = tail.rot.next.z
 		
 		-- Pitch rotations
-		if not wrap or average(pokeballParts.Pokeball:getScale():unpack()) >= 0.5 or anims.coil:isPlaying() then
+		if not wrap or average(pokemonParts.Pokeball:getScale():unpack()) >= 0.5 or anims.coil:isPlaying() then
 			
 			-- Stop all movement
 			tail.rot.next.x = 0

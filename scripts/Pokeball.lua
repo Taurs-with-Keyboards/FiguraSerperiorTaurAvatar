@@ -1,12 +1,11 @@
 -- Required scripts
-local pokemonParts  = require("lib.GroupIndex")(models.SerperiorTaur)
-local pokeballParts = require("lib.GroupIndex")(models.Pokeball)
-local squapi        = require("lib.SquAPI")
-local itemCheck     = require("lib.ItemCheck")
-local color         = require("scripts.ColorProperties")
+local pokemonParts = require("lib.GroupIndex")(models.SerperiorTaur)
+local squapi       = require("lib.SquAPI")
+local itemCheck    = require("lib.ItemCheck")
+local color        = require("scripts.ColorProperties")
 
 -- Animations setup
-local anims = animations.Pokeball
+local anims = animations.SerperiorTaur
 
 -- Config setup
 config:name("SerperiorTaur")
@@ -66,8 +65,8 @@ function events.TICK()
 		end
 		
 		-- Animations
-		anims.open:playing(not isInBall)
-		anims.close:playing(isInBall)
+		anims.pokeballOpen:playing(not isInBall)
+		anims.pokeballClose:playing(isInBall)
 	end
 	
 	-- Scaling lerp
@@ -93,7 +92,7 @@ function events.RENDER(delta, context)
 		:scale(scale.currentPos)
 		:color(not firstPerson and vec(1, scale.currentPos, scale.currentPos) or 1)
 	
-	pokeballParts.Pokeball
+	pokemonParts.PokeBall
 		:rot(menus and 0 or vec(0, player:getBodyYaw(delta) + staticYaw, 0))
 		:scale(math.map(scale.currentPos, 0, 1, vType == "minecraft:player" and 0.5 or 1, 0))
 		:visible(menus or not renderer:isFirstPerson())
@@ -218,7 +217,7 @@ squapi.pokeball = squapi.bounceObject:new()
 
 function events.RENDER(delta, context)
 	
-	pokeballParts.Ball:offsetRot(squapi.pokeball.pos)
+	pokemonParts.PokeBall:offsetRot(squapi.pokeball.pos)
 	
 	local target = vec(leanBack - leanForward, 0, leanLeft - leanRight)
 	

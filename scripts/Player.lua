@@ -1,8 +1,7 @@
 -- Required scripts
-local pokemonParts  = require("lib.GroupIndex")(models.SerperiorTaur)
-local pokeballParts = require("lib.GroupIndex")(models.Pokeball)
-local itemCheck     = require("lib.ItemCheck")
-local color         = require("scripts.ColorProperties")
+local pokemonParts = require("lib.GroupIndex")(models.SerperiorTaur)
+local itemCheck    = require("lib.ItemCheck")
+local color        = require("scripts.ColorProperties")
 
 -- Config setup
 config:name("SerperiorTaur")
