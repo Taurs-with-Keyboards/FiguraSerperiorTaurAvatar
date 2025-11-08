@@ -9454,37 +9454,7 @@
 					"name": "Player",
 					"type": "bone",
 					"rotation_global": false,
-					"quaternion_interpolation": false,
-					"keyframes": [
-						{
-							"channel": "rotation",
-							"data_points": [
-								{
-									"x": "-math.cos(math.rad((({...})[2]:getTime()-0.2)*90))*2",
-									"y": "0",
-									"z": "0"
-								}
-							],
-							"uuid": "e292c2ca-9efa-e03b-2b81-eedf9a1ee51a",
-							"time": 0,
-							"color": -1,
-							"interpolation": "linear"
-						},
-						{
-							"channel": "position",
-							"data_points": [
-								{
-									"x": "-6",
-									"y": "7",
-									"z": "-15"
-								}
-							],
-							"uuid": "c2a807ed-d80f-b292-b4fb-713a14b87454",
-							"time": 0,
-							"color": -1,
-							"interpolation": "linear"
-						}
-					]
+					"quaternion_interpolation": false
 				},
 				"bb297d16-d7e9-99fd-64f1-2aac6d0b9cc8": {
 					"name": "UpperBody",
@@ -9512,7 +9482,37 @@
 					"name": "Avatar",
 					"type": "bone",
 					"rotation_global": false,
-					"quaternion_interpolation": false
+					"quaternion_interpolation": false,
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-math.cos(math.rad((({...})[2]:getTime()-0.2)*90))*2",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "e25f0807-4a60-0d97-333d-9c1a08d12af7",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "-6",
+									"y": "7",
+									"z": "-15"
+								}
+							],
+							"uuid": "64b59261-c2c2-d5fe-c6e2-77e1d28cc354",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
 				},
 				"93f17801-809f-a654-f7d2-e3e6fb9e064d": {
 					"name": "Neck",
