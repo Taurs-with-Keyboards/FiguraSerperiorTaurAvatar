@@ -1,45 +1,15 @@
+-- Kills script if squAPI or squAssets cannot be found
+local s, squapi = pcall(require, "lib.SquAPI")
+if not s then return {} end
+
 -- Required scripts
-local pokemonParts = require("lib.GroupIndex")(models.SerperiorTaur)
-local squapi       = require("lib.SquAPI")
-local pose         = require("scripts.Posing")
+local parts = require("lib.PartsAPI")
+local lerp  = require("lib.LerpAPI")
+local pose  = require("scripts.Posing")
 
--- Animation setup
-local anims = animations.SerperiorTaur
-
--- Parts table setup
-local squapiParts = {}
-
--- Create tables of child parts
-local function children(m, t, n)
-	
-	if n == nil then n = 0 end
-	n = n + 1
-	
-	if squapiParts[t] == nil then
-		squapiParts[t] = {}
-	end
-	
-	table.insert(squapiParts[t], m)
-	
-	local c = m:getChildren()
-	
-	for _, p in ipairs(c) do
-		if p:getName() == t..tostring(n+1) then
-			children(p, t, n)
-		end
-	end
-	
-end
-
--- Call function
-function events.ENTITY_INIT()
-	
-	children(pokemonParts.NeckLeavesLeft1,  "NeckLeavesLeft")
-	children(pokemonParts.NeckLeavesRight1, "NeckLeavesRight")
-	children(pokemonParts.LeftEar1,         "LeftEar")
-	children(pokemonParts.RightEar1,        "RightEar")
-	
-end
+-- Config setup
+config:name("SerperiorTaur")
+local armsMove = config:load("SquapiArmsMove") or false
 
 -- Calculate parent's rotations
 local function calculateParentRot(m)
@@ -52,118 +22,254 @@ local function calculateParentRot(m)
 	
 end
 
--- Squishy smooth Head + Neck
-squapi.smoothHeadNeck(
-	pokemonParts.UpperBody,
-	pokemonParts.Neck,
-	nil,
-	0.4,
-	false
+-- Lerp tables
+local leftArmLerp  = lerp:new(armsMove and 1 or 0, 0.5)
+local rightArmLerp = lerp:new(armsMove and 1 or 0, 0.5)
+
+-- Head table
+local headParts = {
+	
+	parts.group.UpperBody,
+	parts.group.Neck
+	
+}
+
+-- Squishy smooth torso
+local head = squapi.smoothHead:new(
+	headParts,
+	0.3,  -- Strength (0.3)
+	0.4,  -- Tilt (0.4)
+	1,    -- Speed (1)
+	false -- Keep Original Head Pos (false)
 )
 
--- Lerp shift table
-local water = {
-	current    = 0,
-	nextTick   = 0,
-	target     = 0,
-	currentPos = 0
-}
+-- Squishy vanilla arms
+local leftArm = squapi.arm:new(
+	parts.group.LeftArm,
+	1,     -- Strength (1)
+	false, -- Right Arm (false)
+	true   -- Keep Position (true)
+)
 
-local rot = {
-	curr = vec(0, 0),
-	prev = vec(0, 0),
-	diff = vec(0, 0)
-}
+local rightArm = squapi.arm:new(
+	parts.group.RightArm,
+	1,    -- Strength (1)
+	true, -- Right Arm (true)
+	true  -- Keep Position (true)
+)
 
--- Set lerp start on init
+-- Arm strength variables
+local leftArmStrength  = leftArm.strength
+local rightArmStrength = rightArm.strength
+
+-- Bounce Parts
+local ears = lerp:new(0, 0.2, 0.05, 0.5)
+local necks = lerp:new(vec(0, 0, 0), 0.2, 0.05, 0.5)
+local oldPose = "STANDING"
+
+-- Head rotation init
+local _headRot
 function events.ENTITY_INIT()
 	
-	local apply = player:getRot()
-	for k, v in pairs(rot) do
-		rot[k] = apply
-	end
+	_headRot = vanilla_model.HEAD:getOriginRot().x
 	
 end
 
--- Ticks lerps
+local leftEarParts   = parts:createChain("LeftEar")
+local rightEarParts  = parts:createChain("RightEar")
+local leftNeckParts  = parts:createChain("NeckLeavesLeft")
+local rightNeckParts = parts:createChain("NeckLeavesRight")
+
 function events.TICK()
 	
-	-- Target
-	water.target = player:isInWater() and 1 or 0
+	-- Arm variables
+	local handedness  = player:isLeftHanded()
+	local activeness  = player:getActiveHand()
+	local leftActive  = not handedness and "OFF_HAND" or "MAIN_HAND"
+	local rightActive = handedness and "OFF_HAND" or "MAIN_HAND"
+	local leftSwing   = player:getSwingArm() == leftActive
+	local rightSwing  = player:getSwingArm() == rightActive
+	local leftItem    = player:getHeldItem(not handedness)
+	local rightItem   = player:getHeldItem(handedness)
+	local using       = player:isUsingItem()
+	local usingL      = activeness == leftActive and leftItem:getUseAction() or "NONE"
+	local usingR      = activeness == rightActive and rightItem:getUseAction() or "NONE"
+	local bow         = using and (usingL == "BOW" or usingR == "BOW")
+	local crossL      = leftItem.tag and leftItem.tag["Charged"] == 1
+	local crossR      = rightItem.tag and rightItem.tag["Charged"] == 1
 	
-	-- Tick lerp
-	water.current  = water.nextTick
-	water.nextTick = math.lerp(water.nextTick,  water.target,  0.05)
+	-- Arm movement overrides
+	local armShouldMove = pose.swim or pose.crawl
+	
+	-- Control targets based on variables
+	leftArmLerp.target  = (armsMove or armShouldMove or leftSwing  or bow or ((crossL or crossR) or (using and usingL ~= "NONE"))) and 1 or 0
+	rightArmLerp.target = (armsMove or armShouldMove or rightSwing or bow or ((crossL or crossR) or (using and usingR ~= "NONE"))) and 1 or 0
+	
+	-- Variable
+	local dir = player:getLookDir()
+	local headRot = vanilla_model.HEAD:getOriginRot().x
+	
+	-- Directional velocity
+	local fbVel = player:getVelocity():dot((dir.x_z):normalize())
+	local udVel = player:getVelocity().y
+	
+	-- Head velocity
+	ears.vel = ears.vel + (_headRot - headRot) / 2
+	
+	-- Crouch boost
+	if pose.crouch and oldPose == "STANDING" then
+		ears.vel    = ears.vel - 10
+		necks.vel.z = necks.vel.z + 10
+	elseif pose.stand and oldPose == "CROUCHING" then
+		ears.vel    = ears.vel + 10
+		necks.vel.z = necks.vel.z - 10
+	end
+	oldPose = player:getPose()
+	
+	-- Set targets
+	ears.target = math.clamp(fbVel + math.max(udVel, 0) / 1.5, -0.3, 0.3) * 100
+	necks.target.yz = vec(math.clamp(fbVel, -0.2, 0.2) * 50, math.clamp(-udVel, -0.4, 0.4) * 50)
+	
+	-- Store data
+	_headRot = headRot
 	
 end
 
--- Leaf physics
-squapi.leavesY = squapi.bounceObject:new()
-squapi.leavesZ = squapi.bounceObject:new()
-squapi.ears    = squapi.bounceObject:new()
-squapi.headY   = squapi.bounceObject:new()
-
 function events.RENDER(delta, context)
-	
-	-- Render lerp
-	water.currentPos = math.lerp(water.current, water.nextTick, delta)
-	
-	-- Head rot calcs
-	rot.curr = player:getRot(delta)
-	rot.diff = rot.prev - rot.curr
-	rot.prev = rot.curr
 	
 	-- Variables
-	local vel     = player:getVelocity(delta)
-	local dir     = player:getLookDir()
-	local fbVel   = player:getVelocity():dot((dir.x_z):normalize())
-	local yvel    = squapi.yvel()
-	local extend  = pose.swim or pose.elytra or pose.crawl
-	local stiff   = math.lerp(0.01, 0.001, water.currentPos)
-	local bounce  = math.lerp(0.05, 0.025,  water.currentPos)
+	local idleTimer   = world.getTime(delta)
+	local idleRot     = vec(math.deg(math.sin(idleTimer * 0.067) * 0.05), 0, math.deg(math.cos(idleTimer * 0.09) * 0.05 + 0.05))
+	local firstPerson = context == "FIRST_PERSON"
 	
-	-- Rotations
-	local leavesRotY = squapi.leavesY.pos
-	local leavesRotZ = squapi.leavesZ.pos
-	local earsRot    = squapi.ears.pos
-	local headYRot   = squapi.headY.pos
-
-	-- Apply
-	for _, part in ipairs(squapiParts.NeckLeavesLeft) do
-		part:offsetRot(0, (leavesRotY - headYRot) / #squapiParts.NeckLeavesLeft, leavesRotZ / #squapiParts.NeckLeavesLeft)
-	end
-	for _, part in ipairs(squapiParts.NeckLeavesRight) do
-		part:offsetRot(0, (-leavesRotY - headYRot) / #squapiParts.NeckLeavesLeft, -leavesRotZ / #squapiParts.NeckLeavesLeft)
-	end
-	for _, part in ipairs(squapiParts.LeftEar) do
-		part:offsetRot((earsRot - headYRot) / #squapiParts.LeftEar, 0, 0)
-	end
-	for _, part in ipairs(squapiParts.RightEar) do
-		part:offsetRot((earsRot + headYRot) / #squapiParts.RightEar, 0, 0)
+	-- Adjust arm strengths
+	leftArm.strength  = leftArmStrength  * leftArmLerp.currPos
+	rightArm.strength = rightArmStrength * rightArmLerp.currPos
+	
+	-- Adjust arm characteristics after applied by squapi
+	parts.group.LeftArm
+		:offsetRot(
+			parts.group.LeftArm:getOffsetRot()
+			+ ((-idleRot + (vanilla_model.BODY:getOriginRot() * 0.75)) * math.map(leftArmLerp.currPos, 0, 1, 1, 0))
+		)
+		:pos(parts.group.LeftArm:getPos() * vec(1, 1, -1))
+		:visible(not firstPerson)
+	
+	parts.group.RightArm
+		:offsetRot(
+			parts.group.RightArm:getOffsetRot()
+			+ ((idleRot + (vanilla_model.BODY:getOriginRot() * 0.75)) * math.map(rightArmLerp.currPos, 0, 1, 1, 0))
+		)
+		:pos(parts.group.RightArm:getPos() * vec(1, 1, -1))
+		:visible(not firstPerson)
+	
+	-- Set visible if in first person
+	parts.group.LeftArmFP:visible(firstPerson)
+	parts.group.RightArmFP:visible(firstPerson)
+	
+	-- Offset smooth torso in various parts
+	-- Note: acts strangely with `parts.group.body`
+	for _, group in ipairs(parts.group.UpperBody:getChildren()) do
+		if group ~= parts.group.Body then
+			group:rot(-calculateParentRot(group:getParent()))
+		end
 	end
 	
-	-- Targets
-	local leavesYTarget = math.clamp((not extend and fbVel or -yvel) * 100, not extend and -90 * math.map(rot.curr.x, -90, 90, -1, 1) or -90, 90)
-	local leavesZTarget = math.clamp((extend and fbVel or yvel) * 100, -90, 90)
-	local earsTarget    = math.clamp((fbVel * 75) + math.max(yvel * 75, -30) + (-rot.diff.x * 20), -90, 90)
-	local headYTarget   = math.clamp(rot.diff.y * 4, -90, 90)
-	
-	-- Do bounce
-	squapi.leavesY:doBounce(leavesYTarget, stiff, bounce)
-	squapi.leavesZ:doBounce(leavesZTarget, stiff, bounce)
-	squapi.ears:doBounce(earsTarget,       stiff, bounce)
-	squapi.headY:doBounce(headYTarget,     stiff, bounce)
+	-- Apply bounces
+	for _, part in ipairs(leftEarParts) do
+		part:offsetRot(ears.currPos, 0, 0)
+	end
+	for _, part in ipairs(rightEarParts) do
+		part:offsetRot(ears.currPos, 0, 0)
+	end
+	for _, part in ipairs(leftNeckParts) do
+		part:offsetRot(0, necks.currPos.y, -necks.currPos.z)
+	end
+	for _, part in ipairs(rightNeckParts) do
+		part:offsetRot(0, -necks.currPos.y, necks.currPos.z)
+	end
 	
 end
 
+-- Arm movement toggle
+function pings.setSquapiArmsMove(boolean)
+	
+	armsMove = boolean
+	config:save("SquapiArmsMove", armsMove)
+	
+end
+
+-- Sync variable
+function pings.syncSquapi(a)
+	
+	armsMove = a
+	
+end
+
+-- Host only instructions
+if not host:isHost() then return end
+
+-- Sync on tick
+function events.TICK()
+	
+	if world.getTime() % 200 == 0 then
+		pings.syncSquapi(armsMove)
+	end
+	
+end
+
+-- Required scripts
+local s, wheel, itemCheck, c = pcall(require, "scripts.ActionWheel")
+if not s then return end -- Kills script early if ActionWheel.lua isnt found
+pcall(require, "scripts.Anims") -- Tries to find script, not required
+
+-- Check for if page already exists
+local pageExists = action_wheel:getPage("Anims")
+
+-- Pages
+local parentPage = action_wheel:getPage("Main")
+local animsPage  = pageExists or action_wheel:newPage("Anims")
+
+-- Actions table setup
+local a = {}
+
+-- Actions
+if not pageExists then
+	a.pageAct = parentPage:newAction()
+		:item(itemCheck("jukebox"))
+		:onLeftClick(function() wheel:descend(animsPage) end)
+end
+
+a.armsAct = animsPage:newAction()
+	:item(itemCheck("red_dye"))
+	:toggleItem(itemCheck("rabbit_foot"))
+	:onToggle(pings.setSquapiArmsMove)
+	:toggled(armsMove)
+
+-- Update actions
 function events.RENDER(delta, context)
 	
-	-- Offset smooth torso in various parts
-	-- Note: acts strangely with `pokemonParts.body` and when sleeping
-	for _, group in ipairs(pokemonParts.UpperBody:getChildren()) do
-		if group ~= pokemonParts.Body and not pose.sleep then
-			group:rot(-calculateParentRot(group:getParent()))
+	if action_wheel:isEnabled() then
+		if a.pageAct then
+			a.pageAct
+				:title(toJson(
+					{text = "Animation Settings", bold = true, color = c.primary}
+				))
 		end
+		
+		a.armsAct
+			:title(toJson(
+				{
+					"",
+					{text = "Arm Movement Toggle\n\n", bold = true, color = c.primary},
+					{text = "Toggles the movement swing movement of the arms.\nActions are not effected.", color = c.secondary}
+				}
+			))
+		
+		for _, act in pairs(a) do
+			act:hoverColor(c.hover):toggleColor(c.active)
+		end
+		
 	end
 	
 end
