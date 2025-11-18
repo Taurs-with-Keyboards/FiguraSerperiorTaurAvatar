@@ -1824,7 +1824,7 @@
 			"uuid": "aedff880-a117-bbca-ba56-fa1265346be4"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -1864,7 +1864,7 @@
 			"uuid": "d766dc83-8776-6db1-44b6-bd80bc468460"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -1904,7 +1904,7 @@
 			"uuid": "4436097f-48d7-c9bf-9f28-4581d5f30f5f"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -1944,7 +1944,7 @@
 			"uuid": "0da011bc-2bea-0954-911c-ca50d600e064"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -1984,7 +1984,7 @@
 			"uuid": "ec52ae15-6721-cb6f-2fe5-4b2dd306bb51"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2024,7 +2024,7 @@
 			"uuid": "7cc25a35-24ce-1661-7c19-10b7ec71ae1a"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2104,7 +2104,7 @@
 			"uuid": "5c2d7449-644f-8d07-53cd-0fb4413194d2"
 		},
 		{
-			"name": "Lower",
+			"name": "Lower_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2144,7 +2144,7 @@
 			"uuid": "399baccf-8664-504d-6a24-02b05253fb4f"
 		},
 		{
-			"name": "Upper",
+			"name": "Upper_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2185,7 +2185,7 @@
 			"uuid": "cf19bcbc-29ed-a1f7-f581-a1feaea5a4a1"
 		},
 		{
-			"name": "Lower",
+			"name": "Lower_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2225,7 +2225,7 @@
 			"uuid": "31bf1080-2d24-bf91-eb7a-7de1ffc93873"
 		},
 		{
-			"name": "Upper",
+			"name": "Upper_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2266,7 +2266,7 @@
 			"uuid": "4ea5c0dc-30c6-d7a9-239a-01f77a576aee"
 		},
 		{
-			"name": "Lower",
+			"name": "Lower_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2306,7 +2306,7 @@
 			"uuid": "5d9e34c4-0b25-2e24-4d3c-2f0c382829ce"
 		},
 		{
-			"name": "Upper",
+			"name": "Upper_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2346,7 +2346,7 @@
 			"uuid": "57863ca0-0f00-ec8e-321f-f4113824493b"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2386,7 +2386,7 @@
 			"uuid": "4f87a5ed-562e-ce55-1145-a5298414fbb1"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2426,7 +2426,7 @@
 			"uuid": "acf29a1a-ad27-2f29-1d97-4415956665fa"
 		},
 		{
-			"name": "Lower",
+			"name": "Lower_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2466,7 +2466,7 @@
 			"uuid": "d854ae33-d972-999a-503c-dc71a8541e02"
 		},
 		{
-			"name": "Upper",
+			"name": "Upper_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2507,7 +2507,7 @@
 			"uuid": "5cf3ceeb-bb10-d8e7-ec57-5f55ed16ca4d"
 		},
 		{
-			"name": "Upper",
+			"name": "Upper_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2548,7 +2548,7 @@
 			"uuid": "1d78c9b9-26b3-f143-8831-03b88f77c009"
 		},
 		{
-			"name": "Lower",
+			"name": "Lower_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2588,7 +2588,7 @@
 			"uuid": "d9beb932-8d34-4653-39eb-1c4d3e45441d"
 		},
 		{
-			"name": "Upper",
+			"name": "Upper_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2628,7 +2628,7 @@
 			"uuid": "999fd292-781a-e080-6952-ed811102afed"
 		},
 		{
-			"name": "Lower",
+			"name": "Lower_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2668,7 +2668,7 @@
 			"uuid": "7ba96d99-38b0-8bd1-cfc2-481741e977db"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2708,7 +2708,7 @@
 			"uuid": "6848e784-1161-58e9-ff49-5d5b606ef4b9"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2748,7 +2748,7 @@
 			"uuid": "f07cf2b7-099d-5765-7eba-7a434c781cbb"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2828,7 +2828,7 @@
 			"uuid": "96650c60-c793-a67c-7428-33832708d2e5"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2868,7 +2868,7 @@
 			"uuid": "2103c10d-d2b4-1404-b790-64b4f7ac8897"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2908,7 +2908,7 @@
 			"uuid": "3fab6232-81e5-ecf8-138f-1db1e9b8081b"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -2948,7 +2948,7 @@
 			"uuid": "cdc987ed-c217-a1fd-62c0-89f5b46e40ca"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3310,7 +3310,7 @@
 			"uuid": "d88ae8a4-e624-c683-f41e-c5a2bc5088e7"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3351,7 +3351,7 @@
 			"uuid": "b05d78a0-91d7-f0ca-a1c2-7c1916a665f3"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3391,7 +3391,7 @@
 			"uuid": "d2af0e5f-c750-45e5-14b2-aa34892dcc3f"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3431,7 +3431,7 @@
 			"uuid": "7f6b1cc8-6292-db73-52db-82fbce12ed6e"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3472,7 +3472,7 @@
 			"uuid": "dc284c22-db69-76fc-bbef-97c8941435d3"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3513,7 +3513,7 @@
 			"uuid": "b1d5bc8e-5bba-f5e4-da91-52444fae4144"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3554,7 +3554,7 @@
 			"uuid": "14b9527e-e5f1-ee62-cf39-f4e0f7df5fb9"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3595,7 +3595,7 @@
 			"uuid": "bbad68f1-c0ab-2232-a428-8b6a6a016ee2"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3636,7 +3636,7 @@
 			"uuid": "7b562ac4-4e99-7a44-48cb-d257e70ea0d5"
 		},
 		{
-			"name": "Ear",
+			"name": "Ear_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3677,7 +3677,7 @@
 			"uuid": "36a9406e-31b2-2834-26e1-cc8dd6455099"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3717,7 +3717,7 @@
 			"uuid": "e6fa8ad5-13ca-2f0a-bd5e-48340548838d"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3757,7 +3757,7 @@
 			"uuid": "529d0c8a-a2cd-df0f-5440-e960450c546c"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3798,7 +3798,7 @@
 			"uuid": "27326d3e-5a93-42de-518a-f4903a68c96e"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3838,7 +3838,7 @@
 			"uuid": "a93328a3-9ba7-a4e2-3f43-56e16d827056"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3878,7 +3878,7 @@
 			"uuid": "18f0b5f8-b923-fe22-4dde-902798e7fe32"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
@@ -3919,7 +3919,7 @@
 			"uuid": "558cee8b-b57d-ae24-6470-813616d785b4"
 		},
 		{
-			"name": "Leaf",
+			"name": "Leaf_Flat",
 			"box_uv": false,
 			"render_order": "default",
 			"locked": false,
