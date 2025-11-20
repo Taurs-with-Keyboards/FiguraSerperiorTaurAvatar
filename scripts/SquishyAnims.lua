@@ -3,9 +3,10 @@ local s, squapi = pcall(require, "lib.SquAPI")
 if not s then return {} end
 
 -- Required scripts
-local parts = require("lib.PartsAPI")
-local lerp  = require("lib.LerpAPI")
-local pose  = require("scripts.Posing")
+local parts  = require("lib.PartsAPI")
+local lerp   = require("lib.LerpAPI")
+local ground = require("lib.GroundCheck")
+local pose   = require("scripts.Posing")
 
 -- Config setup
 config:name("SerperiorTaur")
@@ -62,18 +63,23 @@ local rightArm = squapi.arm:new(
 local leftArmStrength  = leftArm.strength
 local rightArmStrength = rightArm.strength
 
--- Bounce Parts
-local ears = lerp:new(0, 0.2, 0.05, 0.5)
-local necks = lerp:new(vec(0, 0, 0), 0.2, 0.05, 0.5)
-local oldPose = "STANDING"
-
--- Head rotation init
-local _headRot
+-- Rotation inits
+local _yaw = 0
+local _headRot = vec(0, 0, 0)
 function events.ENTITY_INIT()
 	
-	_headRot = vanilla_model.HEAD:getOriginRot().x
+	_yaw = player:getBodyYaw()
+	_headRot = vanilla_model.HEAD:getOriginRot()
 	
 end
+
+-- Bounce Parts
+local lEar = lerp:new(0, 0.2, 0.05, 0.5)
+local rEar = lerp:new(0, 0.2, 0.05, 0.5)
+local lNeck = lerp:new(vec(0, 0, 0), 0.2, 0.05, 0.5)
+local rNeck = lerp:new(vec(0, 0, 0), 0.2, 0.05, 0.5)
+local _pose = "STANDING"
+local _onGround = true
 
 local leftEarParts   = parts:createChain("LeftEar")
 local rightEarParts  = parts:createChain("RightEar")
@@ -105,33 +111,55 @@ function events.TICK()
 	leftArmLerp.target  = (armsMove or armShouldMove or leftSwing  or bow or ((crossL or crossR) or (using and usingL ~= "NONE"))) and 1 or 0
 	rightArmLerp.target = (armsMove or armShouldMove or rightSwing or bow or ((crossL or crossR) or (using and usingR ~= "NONE"))) and 1 or 0
 	
-	-- Variable
+	-- Variables
 	local dir = player:getLookDir()
-	local headRot = vanilla_model.HEAD:getOriginRot().x
+	local yaw = player:getBodyYaw()
+	local headRot = vanilla_model.HEAD:getOriginRot()
+	local onGround = ground()
 	
 	-- Directional velocity
 	local fbVel = player:getVelocity():dot((dir.x_z):normalize())
 	local udVel = player:getVelocity().y
 	
-	-- Head velocity
-	ears.vel = ears.vel + (_headRot - headRot) / 2
+	-- Set targets
+	if onGround and not _onGround then
+		lEar.vel = lEar.vel - udVel * 35
+		rEar.vel = rEar.vel - udVel * 35
+		lNeck.target.z = -lNeck.target.z
+		rNeck.target.z = -rNeck.target.z
+	else
+		lEar.target = math.clamp(math.clamp(fbVel, -0.1, 0.1) + math.max(udVel, 0) / 1.5, -0.3, 0.3) * 100
+		rEar.target = math.clamp(math.clamp(fbVel, -0.1, 0.1) + math.max(udVel, 0) / 1.5, -0.3, 0.3) * 100
+		lNeck.target.yz = vec(math.clamp(fbVel, -0.2, 0.2) * 50, math.clamp(udVel, -0.4, 0.4) * 50)
+		rNeck.target.yz = vec(math.clamp(-fbVel, -0.2, 0.2) * 50, math.clamp(-udVel, -0.4, 0.4) * 50)
+	end
+	
+	-- Velocity adjustments
+	local yawOffset = math.clamp((_yaw - yaw) / 4, -7.5, 7.5)
+	local headOffset = ((_headRot - headRot) / 4):applyFunc(function(v) return math.clamp(v, -7.5, 7.5) end)
+	lEar.vel = lEar.vel + headOffset.x + headOffset.y - yawOffset
+	rEar.vel = rEar.vel + headOffset.x - headOffset.y + yawOffset
+	lNeck.vel.y = lNeck.vel.y - yawOffset
+	rNeck.vel.y = rNeck.vel.y - yawOffset
 	
 	-- Crouch boost
-	if pose.crouch and oldPose == "STANDING" then
-		ears.vel    = ears.vel - 10
-		necks.vel.z = necks.vel.z + 10
-	elseif pose.stand and oldPose == "CROUCHING" then
-		ears.vel    = ears.vel + 10
-		necks.vel.z = necks.vel.z - 10
+	if pose.crouch and _pose == "STANDING" then
+		lEar.vel    = lEar.vel - 10
+		rEar.vel    = rEar.vel - 10
+		lNeck.vel.z = lNeck.vel.z - 10
+		rNeck.vel.z = rNeck.vel.z + 10
+	elseif pose.stand and _pose == "CROUCHING" then
+		lEar.vel    = lEar.vel + 10
+		rEar.vel    = rEar.vel + 10
+		lNeck.vel.z = lNeck.vel.z + 10
+		rNeck.vel.z = rNeck.vel.z - 10
 	end
-	oldPose = player:getPose()
-	
-	-- Set targets
-	ears.target = math.clamp(fbVel + math.max(udVel, 0) / 1.5, -0.3, 0.3) * 100
-	necks.target.yz = vec(math.clamp(fbVel, -0.2, 0.2) * 50, math.clamp(-udVel, -0.4, 0.4) * 50)
 	
 	-- Store data
+	_yaw = yaw
 	_headRot = headRot
+	_onGround = onGround
+	_pose = player:getPose()
 	
 end
 
@@ -177,16 +205,16 @@ function events.RENDER(delta, context)
 	
 	-- Apply bounces
 	for _, part in ipairs(leftEarParts) do
-		part:offsetRot(ears.currPos, 0, 0)
+		part:offsetRot(lEar.currPos, 0, 0)
 	end
 	for _, part in ipairs(rightEarParts) do
-		part:offsetRot(ears.currPos, 0, 0)
+		part:offsetRot(rEar.currPos, 0, 0)
 	end
 	for _, part in ipairs(leftNeckParts) do
-		part:offsetRot(0, necks.currPos.y, -necks.currPos.z)
+		part:offsetRot(lNeck.currPos)
 	end
 	for _, part in ipairs(rightNeckParts) do
-		part:offsetRot(0, -necks.currPos.y, necks.currPos.z)
+		part:offsetRot(rNeck.currPos)
 	end
 	
 end
