@@ -1,3 +1,4 @@
+--[[
 -- Required scripts
 require("lib.GSAnimBlend")
 local pokemonParts = require("lib.GroupIndex")(models.SerperiorTaur)
@@ -65,10 +66,8 @@ end
 -- Parrot pivots
 local parrots = {
 	
-	--[[
 		pokemonParts.LeftParrotPivot,
 		pokemonParts.RightParrotPivot
-	--]]
 	
 }
 
@@ -291,6 +290,8 @@ function events.RENDER(delta, context)
 		local block = world.getBlockState(player:getPos())
 		local sleepRot = dirRot[block.properties["facing"]]
 		
+		--]]
+		--[[
 		-- Apply
 		models:rot(0, sleepRot, 0)
 		
@@ -430,3 +431,4 @@ end
 
 -- Returns animation variables/action wheel pages
 return t
+--]]
