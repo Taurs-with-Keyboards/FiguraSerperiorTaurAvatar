@@ -52,77 +52,34 @@ serperiorArmor.Materials.turtle
 	:setTexture(textures["textures.armor.turtleHelmet"] or textures["SerperiorTaur.turtleHelmet"])
 
 -- Trims
--- Bolt
-serperiorArmor.TrimPatterns.bolt
-	:setTexture(textures["textures.armor.trims.boltTrim"] or textures["SerperiorTaur.boltTrim"])
+local trims = {
+	"bolt",
+	"coast",
+	"dune",
+	"eye",
+	"flow",
+	"host",
+	"raiser",
+	"rib",
+	"sentry",
+	"shaper",
+	"silence",
+	"snout",
+	"spire",
+	"tide",
+	"vex",
+	"ward",
+	"wayfinder",
+	"wild"
+}
 
--- Coast
-serperiorArmor.TrimPatterns.coast
-	:setTexture(textures["textures.armor.trims.coastTrim"] or textures["SerperiorTaur.coastTrim"])
-
--- Dune
-serperiorArmor.TrimPatterns.dune
-	:setTexture(textures["textures.armor.trims.duneTrim"] or textures["SerperiorTaur.duneTrim"])
-
--- Eye
-serperiorArmor.TrimPatterns.eye
-	:setTexture(textures["textures.armor.trims.eyeTrim"] or textures["SerperiorTaur.eyeTrim"])
-
--- Flow
-serperiorArmor.TrimPatterns.flow
-	:setTexture(textures["textures.armor.trims.flowTrim"] or textures["SerperiorTaur.flowTrim"])
-
--- Host
-serperiorArmor.TrimPatterns.host
-	:setTexture(textures["textures.armor.trims.hostTrim"] or textures["SerperiorTaur.hostTrim"])
-
--- Raiser
-serperiorArmor.TrimPatterns.raiser
-	:setTexture(textures["textures.armor.trims.raiserTrim"] or textures["SerperiorTaur.raiserTrim"])
-
--- Rib
-serperiorArmor.TrimPatterns.rib
-	:setTexture(textures["textures.armor.trims.ribTrim"] or textures["SerperiorTaur.ribTrim"])
-
--- Sentry
-serperiorArmor.TrimPatterns.sentry
-	:setTexture(textures["textures.armor.trims.sentryTrim"] or textures["SerperiorTaur.sentryTrim"])
-
--- Shaper
-serperiorArmor.TrimPatterns.shaper
-	:setTexture(textures["textures.armor.trims.shaperTrim"] or textures["SerperiorTaur.shaperTrim"])
-
--- Silence
-serperiorArmor.TrimPatterns.silence
-	:setTexture(textures["textures.armor.trims.silenceTrim"] or textures["SerperiorTaur.silenceTrim"])
-
--- Snout
-serperiorArmor.TrimPatterns.snout
-	:setTexture(textures["textures.armor.trims.snoutTrim"] or textures["SerperiorTaur.snoutTrim"])
-
--- Spire
-serperiorArmor.TrimPatterns.spire
-	:setTexture(textures["textures.armor.trims.spireTrim"] or textures["SerperiorTaur.spireTrim"])
-
--- Tide
-serperiorArmor.TrimPatterns.tide
-	:setTexture(textures["textures.armor.trims.tideTrim"] or textures["SerperiorTaur.tideTrim"])
-
--- Vex
-serperiorArmor.TrimPatterns.vex
-	:setTexture(textures["textures.armor.trims.vexTrim"] or textures["SerperiorTaur.vexTrim"])
-
--- Ward
-serperiorArmor.TrimPatterns.ward
-	:setTexture(textures["textures.armor.trims.wardTrim"] or textures["SerperiorTaur.wardTrim"])
-
--- Wayfinder
-serperiorArmor.TrimPatterns.wayfinder
-	:setTexture(textures["textures.armor.trims.wayfinderTrim"] or textures["SerperiorTaur.wayfinderTrim"])
-
--- Wild
-serperiorArmor.TrimPatterns.wild
-	:setTexture(textures["textures.armor.trims.wildTrim"] or textures["SerperiorTaur.wildTrim"])
+-- Apply trims
+for _, trim in ipairs(trims) do
+	local tex = textures["textures.armor.trims."..trim.."Trim"] or textures["SerperiorTaur."..trim.."Trim"] or false
+	if tex then
+		serperiorArmor.TrimPatterns[trim]:setTexture(tex)
+	end
+end
 
 -- Config setup
 config:name("SerperiorTaur")
