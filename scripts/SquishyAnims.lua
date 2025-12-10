@@ -227,10 +227,10 @@ function pings.setSquapiArmsMove(boolean)
 	
 end
 
--- Sync variable
-function pings.syncSquapi(a)
+-- Sync variables
+function pings.syncSquapi(...)
 	
-	armsMove = a
+	armsMove = ...
 	
 end
 
