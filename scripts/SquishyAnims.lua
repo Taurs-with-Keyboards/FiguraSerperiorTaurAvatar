@@ -247,7 +247,7 @@ function events.TICK()
 end
 
 -- Required scripts
-local s, wheel, itemCheck, c = pcall(require, "scripts.ActionWheel")
+local s, wheel, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 pcall(require, "scripts.Anims") -- Tries to find script, not required
 
@@ -264,13 +264,13 @@ local a = {}
 -- Actions
 if not pageExists then
 	a.pageAct = parentPage:newAction()
-		:item(itemCheck("jukebox"))
+		:item("jukebox")
 		:onLeftClick(function() wheel:descend(animsPage) end)
 end
 
 a.armsAct = animsPage:newAction()
-	:item(itemCheck("red_dye"))
-	:toggleItem(itemCheck("rabbit_foot"))
+	:item("red_dye")
+	:toggleItem("rabbit_foot")
 	:onToggle(pings.setSquapiArmsMove)
 	:toggled(armsMove)
 
