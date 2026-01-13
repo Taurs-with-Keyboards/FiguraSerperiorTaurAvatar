@@ -4,13 +4,13 @@ if not s then return {} end
 
 -- Required scripts
 local parts  = require("lib.PartsAPI")
+local sync   = require("lib.LetThatSyncFig")
 local lerp   = require("lib.LerpAPI")
 local ground = require("lib.GroundCheck")
 local pose   = require("scripts.Posing")
 
--- Config setup
-config:name("SerperiorTaur")
-local armsMove = config:load("SquapiArmsMove") or false
+-- Synced variables setup
+local armsMove = sync.add(config:load("SquapiArmsMove"), false)
 
 -- Calculate parent's rotations
 local function calculateParentRot(m)
@@ -24,8 +24,8 @@ local function calculateParentRot(m)
 end
 
 -- Lerp tables
-local leftArmLerp  = lerp:new(armsMove and 1 or 0, 0.5)
-local rightArmLerp = lerp:new(armsMove and 1 or 0, 0.5)
+local leftArmLerp  = lerp:new(sync[armsMove] and 1 or 0, 0.5)
+local rightArmLerp = lerp:new(sync[armsMove] and 1 or 0, 0.5)
 
 -- Head table
 local headParts = {
@@ -108,8 +108,8 @@ function events.TICK()
 	local armShouldMove = pose.swim or pose.crawl
 	
 	-- Control targets based on variables
-	leftArmLerp.target  = (armsMove or armShouldMove or leftSwing  or bow or ((crossL or crossR) or (using and usingL ~= "NONE"))) and 1 or 0
-	rightArmLerp.target = (armsMove or armShouldMove or rightSwing or bow or ((crossL or crossR) or (using and usingR ~= "NONE"))) and 1 or 0
+	leftArmLerp.target  = (sync[armsMove] or armShouldMove or leftSwing  or bow or ((crossL or crossR) or (using and usingL ~= "NONE"))) and 1 or 0
+	rightArmLerp.target = (sync[armsMove] or armShouldMove or rightSwing or bow or ((crossL or crossR) or (using and usingR ~= "NONE"))) and 1 or 0
 	
 	-- Variables
 	local dir = player:getLookDir()
@@ -222,29 +222,13 @@ end
 -- Arm movement toggle
 function pings.setSquapiArmsMove(boolean)
 	
-	armsMove = boolean
-	config:save("SquapiArmsMove", armsMove)
-	
-end
-
--- Sync variables
-function pings.syncSquapi(...)
-	
-	armsMove = ...
+	sync[armsMove] = boolean
+	config:save("SquapiArmsMove", sync[armsMove])
 	
 end
 
 -- Host only instructions
 if not host:isHost() then return end
-
--- Sync on tick
-function events.TICK()
-	
-	if world.getTime() % 200 == 0 then
-		pings.syncSquapi(armsMove)
-	end
-	
-end
 
 -- Required scripts
 local s, wheel, c = pcall(require, "scripts.ActionWheel")
@@ -272,7 +256,7 @@ a.armsAct = animsPage:newAction()
 	:item("red_dye")
 	:toggleItem("rabbit_foot")
 	:onToggle(pings.setSquapiArmsMove)
-	:toggled(armsMove)
+	:toggled(sync[armsMove])
 
 -- Update actions
 function events.RENDER(delta, context)
