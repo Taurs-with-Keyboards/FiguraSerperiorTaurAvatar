@@ -10321,7 +10321,7 @@
 								{
 									"x": "-29.5",
 									"y": "4.5",
-									"z": "12.5\n"
+									"z": "12.5"
 								}
 							],
 							"uuid": "f2f9857d-1561-59b4-1751-71bd13f749f1",
@@ -10387,7 +10387,7 @@
 								{
 									"x": "math.cos(math.rad((({...})[2]:getTime()-0.2)*90))*4-29",
 									"y": "0.5",
-									"z": "math.cos(math.rad((({...})[2]:getTime()-0.6)*90))*4+50\n"
+									"z": "math.cos(math.rad((({...})[2]:getTime()-0.6)*90))*4+50"
 								}
 							],
 							"uuid": "2578c130-ea84-2dee-855e-5dbb062a8a66",
@@ -10453,7 +10453,7 @@
 								{
 									"x": "-22",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*90))+36\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*90))+36"
 								}
 							],
 							"uuid": "c27bec42-089c-5fd7-0389-4b310812d86c",
@@ -11350,7 +11350,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-280))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-280))*30"
 								}
 							],
 							"uuid": "8da3696c-39b1-75f4-a36f-a2d10d1b5fb6",
@@ -11372,7 +11372,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-330))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-330))*30"
 								}
 							],
 							"uuid": "1237a502-8f29-d65b-ad58-f7002cbe8ac0",
@@ -11394,7 +11394,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-380))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-380))*30"
 								}
 							],
 							"uuid": "fb05ca21-583c-f7ca-36eb-c4bff2926663",
@@ -11416,7 +11416,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-430))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-430))*30"
 								}
 							],
 							"uuid": "9b55b9fd-b545-4df0-ce77-3e909140335a",
@@ -11438,7 +11438,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-480))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-480))*30"
 								}
 							],
 							"uuid": "efa43801-0255-46bb-f27c-1f89e58be427",
@@ -12061,7 +12061,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-280))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-280))*30"
 								}
 							],
 							"uuid": "8da3696c-39b1-75f4-a36f-a2d10d1b5fb6",
@@ -12083,7 +12083,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-330))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-330))*30"
 								}
 							],
 							"uuid": "1237a502-8f29-d65b-ad58-f7002cbe8ac0",
@@ -12105,7 +12105,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-380))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-380))*30"
 								}
 							],
 							"uuid": "fb05ca21-583c-f7ca-36eb-c4bff2926663",
@@ -12127,7 +12127,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-430))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-430))*30"
 								}
 							],
 							"uuid": "9b55b9fd-b545-4df0-ce77-3e909140335a",
@@ -12149,7 +12149,7 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-480))*30\n"
+									"z": "-math.cos(math.rad(({...})[2]:getTime()*180-480))*30"
 								}
 							],
 							"uuid": "efa43801-0255-46bb-f27c-1f89e58be427",
