@@ -21593,7 +21593,7 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\nMath.sin(q.anim_time*1080)*15",
+									"x": "q(...) +\n-Math.sin(q.anim_time*1080)*15",
 									"y": "0",
 									"z": "q(...) +\n-Math.sin(q.anim_time*720)*10"
 								}
@@ -21621,7 +21621,7 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\nMath.sin(q.anim_time*1350)*2",
+									"x": "q(...) +\n-Math.sin(q.anim_time*1350)*2",
 									"y": "0",
 									"z": "q(...) +\n-Math.sin(q.anim_time*720)*2"
 								}
@@ -22830,7 +22830,7 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\nMath.sin(q.anim_time*1080)*15",
+									"x": "q(...) +\n-Math.sin(q.anim_time*1080)*15",
 									"y": "0",
 									"z": "q(...) +\nMath.sin(q.anim_time*720)*10"
 								}
@@ -22844,7 +22844,7 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\nMath.sin(q.anim_time*1350)*2",
+									"x": "q(...) +\n-Math.sin(q.anim_time*1350)*2",
 									"y": "0",
 									"z": "q(...) +\nMath.sin(q.anim_time*720)*2"
 								}
@@ -24081,8 +24081,8 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\nMath.cos(q.anim_time*900-60)",
-									"y": "-q(...) -\nMath.sin(q.anim_time*900-60)*2",
+									"x": "q(...) +\n-Math.cos(q.anim_time*900-60)",
+									"y": "q(...) +\n-Math.sin(q.anim_time*900-60)*2",
 									"z": "q(...) +\n-Math.sin(q.anim_time*900-60)*14"
 								}
 							],
@@ -24096,7 +24096,7 @@
 							"data_points": [
 								{
 									"x": "0",
-									"y": "-q(...) -\nMath.sin(q.anim_time*900-60)",
+									"y": "q(...) +\n-Math.sin(q.anim_time*900-60)",
 									"z": "q(...) +\n-Math.sin(q.anim_time*900-60)*6"
 								}
 							],
@@ -24110,7 +24110,7 @@
 							"data_points": [
 								{
 									"x": "0",
-									"y": "-q(...) -\nMath.sin(q.anim_time*900-60)",
+									"y": "q(...) +\n-Math.sin(q.anim_time*900-60)",
 									"z": "q(...) +\n-Math.sin(q.anim_time*900-60)"
 								}
 							],
@@ -24137,7 +24137,7 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "-q(...) -\n+Math.sin(q.anim_time*900)*0.5",
+									"x": "q(...) +\nMath.sin(q.anim_time*900)*0.5",
 									"y": "0",
 									"z": "0"
 								}
@@ -25374,8 +25374,8 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\nMath.cos(q.anim_time*900-60)",
-									"y": "-q(...) -\n+Math.sin(q.anim_time*900-60)*2",
+									"x": "q(...) +\n-Math.cos(q.anim_time*900-60)",
+									"y": "q(...) +\nMath.sin(q.anim_time*900-60)*2",
 									"z": "q(...) +\nMath.sin(q.anim_time*900-60)*14"
 								}
 							],
@@ -25389,7 +25389,7 @@
 							"data_points": [
 								{
 									"x": "0",
-									"y": "-q(...) -\n+Math.sin(q.anim_time*900-60)",
+									"y": "q(...) +\nMath.sin(q.anim_time*900-60)",
 									"z": "q(...) +\nMath.sin(q.anim_time*900-60)*6"
 								}
 							],
@@ -25403,7 +25403,7 @@
 							"data_points": [
 								{
 									"x": "0",
-									"y": "-q(...) -\n+Math.sin(q.anim_time*900-60)",
+									"y": "q(...) +\nMath.sin(q.anim_time*900-60)",
 									"z": "q(...) +\nMath.sin(q.anim_time*900-60)"
 								}
 							],
@@ -25430,7 +25430,7 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "-q(...) -\nMath.sin(q.anim_time*900)*0.5",
+									"x": "q(...) +\n-Math.sin(q.anim_time*900)*0.5",
 									"y": "0",
 									"z": "0"
 								}
@@ -26667,7 +26667,7 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\n+2-Math.sin(q.anim_time*180)*10",
+									"x": "q(...) +\n-Math.sin(q.anim_time*180)*10+2",
 									"y": "0",
 									"z": "0"
 								}
@@ -26681,7 +26681,7 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\n1.5-Math.sin(q.anim_time*1440)*2",
+									"x": "q(...) +\n-Math.sin(q.anim_time*1440)*2-1.5",
 									"y": "0",
 									"z": "0"
 								}
@@ -26695,7 +26695,7 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-q(...) -\n+0.2-Math.sin(q.anim_time*540)*0.2",
+									"x": "q(...) +\n-Math.sin(q.anim_time*540)*0.2+0.2",
 									"y": "0",
 									"z": "0"
 								}
