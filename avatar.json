@@ -2,15 +2,20 @@
 	"name": "Serperior Taur",
 	"description": "\"Stops opponents with just a glare.\"",
 	"authors": [
-		"Psycho Breadstick (QA, Origin)\n",
-		"Katt (Updated scripts, APIs)\n",
-		"Grandpa Scout\n(APIs)\n",
-		"Jimmy (Animation code)\n",
-		"Squishy (APIs)\n",
-		"4P5 (APIs, Better Action Wheel)\n",
-		"The Cobblemon Team (Original models,\nanimations, textures, icons, and sounds)\n",
-		"The Pokemon Company (Serperior design)\n",
-		"Total (Avatar Maker)\n"
+		"Total",
+		"§f§nCredits§r",
+		"Psycho Breadstick",
+		"Jimmy",
+		"PoolloverNathan",
+		"The Cobblemon Team",
+		"The Pokemon Company",
+		"§f§nLibraries§r",
+		"Grandpa Scout (GSAnimBlend)",
+		"Squishy (SquAPI)",
+		"Katt (OriginsAPI, KattArmor)",
+		"4P5 (GroundCheck)",
+		"Manuel_ (Molang Conversions)",
+		"Auria (Molang Conversions)"
 	],
 	"version": "0.1.5"
 }
