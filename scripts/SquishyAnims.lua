@@ -10,7 +10,7 @@ local ground = require("lib.GroundCheck")
 local pose   = require("scripts.Posing")
 
 -- Synced variables setup
-local armsMove = sync.add(config:load("SquapiArmsMove"), false)
+local armsMove = sync.new("AnimsArms", false):config()
 
 -- Calculate parent's rotations
 local function calculateParentRot(m)
@@ -24,8 +24,8 @@ local function calculateParentRot(m)
 end
 
 -- Lerp tables
-local leftArmLerp  = lerp:new(sync[armsMove] and 1 or 0, 0.5)
-local rightArmLerp = lerp:new(sync[armsMove] and 1 or 0, 0.5)
+local leftArmLerp  = lerp.new(armsMove.curr and 1 or 0, 0.5)
+local rightArmLerp = lerp.new(armsMove.curr and 1 or 0, 0.5)
 
 -- Head table
 local headParts = {
@@ -74,10 +74,10 @@ function events.ENTITY_INIT()
 end
 
 -- Bounce Parts
-local lEar = lerp:new(0, 0.2, 0.05, 0.5)
-local rEar = lerp:new(0, 0.2, 0.05, 0.5)
-local lNeck = lerp:new(vec(0, 0, 0), 0.2, 0.05, 0.5)
-local rNeck = lerp:new(vec(0, 0, 0), 0.2, 0.05, 0.5)
+local lEar = lerp.new(0, 0.2, 0.05, 0.5)
+local rEar = lerp.new(0, 0.2, 0.05, 0.5)
+local lNeck = lerp.new(vec(0, 0, 0), 0.2, 0.05, 0.5)
+local rNeck = lerp.new(vec(0, 0, 0), 0.2, 0.05, 0.5)
 local _pose = "STANDING"
 local _onGround = true
 
@@ -108,8 +108,8 @@ function events.TICK()
 	local armShouldMove = pose.swim or pose.crawl
 	
 	-- Control targets based on variables
-	leftArmLerp.target  = (sync[armsMove] or armShouldMove or leftSwing  or bow or ((crossL or crossR) or (using and usingL ~= "NONE"))) and 1 or 0
-	rightArmLerp.target = (sync[armsMove] or armShouldMove or rightSwing or bow or ((crossL or crossR) or (using and usingR ~= "NONE"))) and 1 or 0
+	leftArmLerp.target  = (armsMove.curr or armShouldMove or leftSwing  or bow or ((crossL or crossR) or (using and usingL ~= "NONE"))) and 1 or 0
+	rightArmLerp.target = (armsMove.curr or armShouldMove or rightSwing or bow or ((crossL or crossR) or (using and usingR ~= "NONE"))) and 1 or 0
 	
 	-- Variables
 	local dir = player:getLookDir()
@@ -219,14 +219,6 @@ function events.RENDER(delta, context)
 	
 end
 
--- Arm movement toggle
-function pings.setSquapiArmsMove(boolean)
-	
-	sync[armsMove] = boolean
-	config:save("SquapiArmsMove", sync[armsMove])
-	
-end
-
 -- Host only instructions
 if not host:isHost() then return end
 
@@ -255,8 +247,10 @@ end
 a.armsAct = animsPage:newAction()
 	:item("red_dye")
 	:toggleItem("rabbit_foot")
-	:onToggle(pings.setSquapiArmsMove)
-	:toggled(sync[armsMove])
+	:onToggle(function(bool)
+		armsMove:update(bool)
+	end)
+	:toggled(armsMove.curr)
 
 -- Update actions
 function events.RENDER(delta, context)
