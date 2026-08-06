@@ -232,7 +232,7 @@ function events.TICK()
 end
 
 -- Required script
-local s, pageNav, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Check for if page already exists
@@ -242,17 +242,14 @@ local pageExists = action_wheel:getPage("Serperior")
 local parentPage    = action_wheel:getPage("Main")
 local serperiorPage = pageExists or action_wheel:newPage("Serperior")
 
--- Actions table setup
-local a = {}
-
 -- Actions
 if not pageExists then
-	a.pageAct = parentPage:newAction()
+	acts.pageAct = parentPage:newAction()
 		:item("cobblemon:leaf_stone", "dandelion")
 		:onLeftClick(function() pageNav.descend(serperiorPage) end)
 end
 
-a.toggleAct = serperiorPage:newAction()
+acts.toggleAct = serperiorPage:newAction()
 	:item("cobblemon:nest_ball", "ender_pearl")
 	:onToggle(function(bool)
 		if checkToggle() then toggle:update(bool) end
@@ -262,14 +259,15 @@ a.toggleAct = serperiorPage:newAction()
 function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
-		if a.pageAct then
-			a.pageAct
+		if acts.pageAct then
+			acts.pageAct
 				:title(toJson(
 					{text = "Serperior Settings", bold = true, color = c.primary}
 				))
+				:hoverColor(c.hover)
 		end
 		
-		a.toggleAct
+		acts.toggleAct
 			:title(toJson(
 				{
 					"",
@@ -280,10 +278,8 @@ function events.RENDER(delta, context)
 				}
 			))
 			:toggled(toggle.curr)
-		
-		for _, act in pairs(a) do
-			act:hoverColor(c.hover):toggleColor(c.active)
-		end
+			:hoverColor(c.hover)
+			:toggleColor(c.active)
 		
 	end
 	
